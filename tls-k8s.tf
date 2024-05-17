@@ -13,8 +13,8 @@ locals {
 # Kubernetes CA (tls/{ca.crt,ca.key})
 
 resource "tls_private_key" "kube-ca" {
-  algorithm = "RSA"
-  rsa_bits  = "2048"
+  algorithm = "ED25519"
+  ecdsa_curve = "P256"
 }
 
 resource "tls_self_signed_cert" "kube-ca" {
@@ -26,7 +26,7 @@ resource "tls_self_signed_cert" "kube-ca" {
   }
 
   is_ca_certificate     = true
-  validity_period_hours = 8760
+  validity_period_hours = 26300
 
   allowed_uses = [
     "key_encipherment",
@@ -38,8 +38,8 @@ resource "tls_self_signed_cert" "kube-ca" {
 # Kubernetes API Server (tls/{apiserver.key,apiserver.crt})
 
 resource "tls_private_key" "apiserver" {
-  algorithm = "RSA"
-  rsa_bits  = "2048"
+  algorithm = "ED25519"
+  ecdsa_curve = "P256"
 }
 
 resource "tls_cert_request" "apiserver" {
@@ -69,7 +69,7 @@ resource "tls_locally_signed_cert" "apiserver" {
   ca_private_key_pem = tls_private_key.kube-ca.private_key_pem
   ca_cert_pem        = tls_self_signed_cert.kube-ca.cert_pem
 
-  validity_period_hours = 8760
+  validity_period_hours = 26300
 
   allowed_uses = [
     "key_encipherment",
@@ -82,8 +82,8 @@ resource "tls_locally_signed_cert" "apiserver" {
 # kube-controller-manager
 
 resource "tls_private_key" "controller-manager" {
-  algorithm = "RSA"
-  rsa_bits  = "2048"
+  algorithm = "ED25519"
+  ecdsa_curve = "P256"
 }
 
 resource "tls_cert_request" "controller-manager" {
@@ -100,7 +100,7 @@ resource "tls_locally_signed_cert" "controller-manager" {
   ca_private_key_pem = tls_private_key.kube-ca.private_key_pem
   ca_cert_pem        = tls_self_signed_cert.kube-ca.cert_pem
 
-  validity_period_hours = 8760
+  validity_period_hours = 26300
 
   allowed_uses = [
     "key_encipherment",
@@ -112,8 +112,8 @@ resource "tls_locally_signed_cert" "controller-manager" {
 # kube-scheduler
 
 resource "tls_private_key" "scheduler" {
-  algorithm = "RSA"
-  rsa_bits  = "2048"
+  algorithm = "ED25519"
+  ecdsa_curve = "P256"
 }
 
 resource "tls_cert_request" "scheduler" {
@@ -130,7 +130,7 @@ resource "tls_locally_signed_cert" "scheduler" {
   ca_private_key_pem = tls_private_key.kube-ca.private_key_pem
   ca_cert_pem        = tls_self_signed_cert.kube-ca.cert_pem
 
-  validity_period_hours = 8760
+  validity_period_hours = 26300
 
   allowed_uses = [
     "key_encipherment",
@@ -142,8 +142,8 @@ resource "tls_locally_signed_cert" "scheduler" {
 # Kubernetes Admin (tls/{admin.key,admin.crt})
 
 resource "tls_private_key" "admin" {
-  algorithm = "RSA"
-  rsa_bits  = "2048"
+  algorithm = "ED25519"
+  ecdsa_curve = "P256"
 }
 
 resource "tls_cert_request" "admin" {
@@ -161,7 +161,7 @@ resource "tls_locally_signed_cert" "admin" {
   ca_private_key_pem = tls_private_key.kube-ca.private_key_pem
   ca_cert_pem        = tls_self_signed_cert.kube-ca.cert_pem
 
-  validity_period_hours = 8760
+  validity_period_hours = 26300
 
   allowed_uses = [
     "key_encipherment",
@@ -173,7 +173,7 @@ resource "tls_locally_signed_cert" "admin" {
 # Kubernete's Service Account (tls/{service-account.key,service-account.pub})
 
 resource "tls_private_key" "service-account" {
-  algorithm = "RSA"
-  rsa_bits  = "2048"
+  algorithm = "ED25519"
+  ecdsa_curve = "P256"
 }
 

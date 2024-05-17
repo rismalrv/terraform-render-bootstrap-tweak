@@ -13,8 +13,8 @@ locals {
 resource "tls_private_key" "aggregation-ca" {
   count = var.enable_aggregation ? 1 : 0
 
-  algorithm = "RSA"
-  rsa_bits  = "2048"
+  algorithm = "ED25519"
+  ecdsa_curve = "P256"
 }
 
 resource "tls_self_signed_cert" "aggregation-ca" {
@@ -27,7 +27,7 @@ resource "tls_self_signed_cert" "aggregation-ca" {
   }
 
   is_ca_certificate     = true
-  validity_period_hours = 8760
+  validity_period_hours = 26300
 
   allowed_uses = [
     "key_encipherment",
@@ -42,8 +42,8 @@ resource "tls_self_signed_cert" "aggregation-ca" {
 resource "tls_private_key" "aggregation-client" {
   count = var.enable_aggregation ? 1 : 0
 
-  algorithm = "RSA"
-  rsa_bits  = "2048"
+  algorithm = "ED25519"
+  ecdsa_curve = "P256"
 }
 
 resource "tls_cert_request" "aggregation-client" {
@@ -64,7 +64,7 @@ resource "tls_locally_signed_cert" "aggregation-client" {
   ca_private_key_pem = tls_private_key.aggregation-ca[0].private_key_pem
   ca_cert_pem        = tls_self_signed_cert.aggregation-ca[0].cert_pem
 
-  validity_period_hours = 8760
+  validity_period_hours = 26300
 
   allowed_uses = [
     "key_encipherment",

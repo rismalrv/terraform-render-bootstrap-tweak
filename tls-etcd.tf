@@ -16,8 +16,8 @@ locals {
 # etcd CA
 
 resource "tls_private_key" "etcd-ca" {
-  algorithm = "RSA"
-  rsa_bits  = "2048"
+  algorithm = "ED25519"
+  ecdsa_curve = "P256"
 }
 
 resource "tls_self_signed_cert" "etcd-ca" {
@@ -29,7 +29,7 @@ resource "tls_self_signed_cert" "etcd-ca" {
   }
 
   is_ca_certificate     = true
-  validity_period_hours = 8760
+  validity_period_hours = 26300
 
   allowed_uses = [
     "key_encipherment",
@@ -41,8 +41,8 @@ resource "tls_self_signed_cert" "etcd-ca" {
 # etcd Client (apiserver to etcd communication)
 
 resource "tls_private_key" "client" {
-  algorithm = "RSA"
-  rsa_bits  = "2048"
+  algorithm = "ED25519"
+  ecdsa_curve = "P256"
 }
 
 resource "tls_cert_request" "client" {
@@ -66,7 +66,7 @@ resource "tls_locally_signed_cert" "client" {
   ca_private_key_pem = tls_private_key.etcd-ca.private_key_pem
   ca_cert_pem        = tls_self_signed_cert.etcd-ca.cert_pem
 
-  validity_period_hours = 8760
+  validity_period_hours = 26300
 
   allowed_uses = [
     "key_encipherment",
@@ -79,8 +79,8 @@ resource "tls_locally_signed_cert" "client" {
 # etcd Server
 
 resource "tls_private_key" "server" {
-  algorithm = "RSA"
-  rsa_bits  = "2048"
+  algorithm = "ED25519"
+  ecdsa_curve = "P256"
 }
 
 resource "tls_cert_request" "server" {
@@ -104,7 +104,7 @@ resource "tls_locally_signed_cert" "server" {
   ca_private_key_pem = tls_private_key.etcd-ca.private_key_pem
   ca_cert_pem        = tls_self_signed_cert.etcd-ca.cert_pem
 
-  validity_period_hours = 8760
+  validity_period_hours = 26300
 
   allowed_uses = [
     "key_encipherment",
@@ -117,8 +117,8 @@ resource "tls_locally_signed_cert" "server" {
 # etcd Peer
 
 resource "tls_private_key" "peer" {
-  algorithm = "RSA"
-  rsa_bits  = "2048"
+  algorithm = "ED25519"
+  ecdsa_curve = "P256"
 }
 
 resource "tls_cert_request" "peer" {
@@ -138,7 +138,7 @@ resource "tls_locally_signed_cert" "peer" {
   ca_private_key_pem = tls_private_key.etcd-ca.private_key_pem
   ca_cert_pem        = tls_self_signed_cert.etcd-ca.cert_pem
 
-  validity_period_hours = 8760
+  validity_period_hours = 26300
 
   allowed_uses = [
     "key_encipherment",
